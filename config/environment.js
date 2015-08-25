@@ -16,6 +16,9 @@ module.exports = function(environment) {
     APP: {
       // Here you can pass flags/options to your application instance
       // when it is created
+    },
+    sassOptions: {
+      includePaths: ['bower_components/materialize/sass']
     }
   };
 
@@ -42,6 +45,11 @@ module.exports = function(environment) {
   if (environment === 'production') {
 
   }
+
+  ENV.contentSecurityPolicy = {
+    "connect-src": "'self' http://localhost:5984",
+    "style-src": "'self' 'unsafe-inline' http://localhost:5984"
+  };
 
   return ENV;
 };

@@ -47,8 +47,10 @@ module.exports = function(environment) {
   }
 
   ENV.contentSecurityPolicy = {
-    "connect-src": "'self' http://localhost:5984",
-    "style-src": "'self' 'unsafe-inline' http://localhost:5984"
+    "style-src": "'self' 'unsafe-inline' http://localhost:5984",
+    "media-src": "'self' *",
+    "connect-src": "'self' *",
+    "frame-src": "'self' https://www.youtube.com"
   };
 
   return ENV;

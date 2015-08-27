@@ -1,4 +1,17 @@
-<h2 id="title">Welcome to Ember.js</h2>
+{{#md-navbar name='Truhound' class='orange'}}
+  {{#link-to 'home' tagName='li'}}
+    {{link-to 'Home' 'home'}}
+  {{/link-to}}
+  {{#link-to 'writer' tagName='li'}}
+    {{link-to 'Writer' 'writer'}}
+  {{/link-to}}
+  {{#link-to 'login' tagName='li'}}
+    {{link-to 'Login' 'login'}}
+  {{/link-to}}
+  {{#link-to 'signup' tagName='li'}}
+    {{link-to 'Signup' 'signup'}}
+  {{/link-to}}
+{{/md-navbar}}
 
 {{outlet}}
 

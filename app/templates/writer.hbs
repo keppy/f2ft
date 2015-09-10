@@ -1,3 +1,17 @@
+{{#if errorMessage}}
+  {{#md-card-panel class="white"
+    bodyClass="red-text"}}
+    {{errorMessage}}
+  {{/md-card-panel}}
+{{/if}}
+
+{{#if successMessage}}
+  {{#md-card-panel class="white"
+    bodyClass="green-text"}}
+    {{successMessage}}
+  {{/md-card-panel}}
+{{/if}}
+
 {{#md-card title=articleTitle}}
 
   {{#md-card-content}}
@@ -13,13 +27,13 @@
   <div class="col m8">
     {{md-btn icon='mdi-content-save'
       iconPositin='right'
-      text='Save'
+      text=(t 'article.save')
       action='save'
       class='orange darken-4 font-white'}}
 
     {{md-btn icon='mdi-content-send'
       iconPositin='right'
-      text='Publish'
+      text=(t 'article.publish')
       action='publish'
       class='orange darken-4 font-white'}}
   </div>
@@ -28,19 +42,18 @@
     {{#md-fixed-btns
       class="" 
       btnIcon="mdi-content-add"
-      btnClass="orange accent-1"}}    
+      btnClass="orange accent-2"}}    
       {{md-fixed-btn
-        btnClass="orange accent-1"
+        btnClass="orange accent-4"
         btnIcon='mdi-av-videocam'
         action='toggleVideoModal'}}
       {{md-fixed-btn
-        btnClass="orange accent-1"
+        btnClass="orange accent-3"
         btnIcon='mdi-image-photo-camera'
         action='toggleImageModal'}}
     {{/md-fixed-btns}}
   </div>
 </div>
-
 
 {{#if showModal}}
   {{#modal-dialog
@@ -51,7 +64,7 @@
       <div class="col m12">
         {{#md-card title=modalState.title
           class="add-dialog"}}
-          {{md-input value=modalState.value
+          {{md-input value=modalInputValue
             label=modalState.label}}
             <div class="row">
               <div class="col s4 offset-s4">

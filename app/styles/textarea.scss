@@ -1,6 +1,9 @@
 textarea:focus, div:focus {
-  height: 500px;
   outline: 0px solid transparent;
+}
+
+.editable {
+  min-height: 500px;
 }
 
 .add-dialog {
@@ -21,13 +24,13 @@ li {
 }
 
 .medium-editor-toolbar li button {
-  background-color: #e65100;
-  border-right: 1px solid rgb(255, 109, 0);
+  background-color: rgb(255, 109, 0);
+  border-right: 1px solid #e65100;
 
   &:hover {
-    background-color: rgb(255, 109, 0);
+    background-color: #e65100;
   }
 }
 .medium-toolbar-arrow-under:after {
-  border-color: #e65100 transparent transparent transparent;
+  border-color: rgb(255, 109, 0) transparent transparent transparent;
 }

@@ -2,9 +2,11 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
 
+  i18n: Ember.inject.service(),
+
   setupController(controller) {
     let options = JSON.stringify({
-      theme: "flat",
+      theme: 'flat',
       toobar: {
         diffLeft: 25,
         diffTop: 10
@@ -13,18 +15,36 @@ export default Ember.Route.extend({
     });
 
     controller.setProperties({
+      errorMessage: null,
+      successMessage: null,
+      article: null,
       showModal: false,
       modalState: {
         action: '',
         label: '',
-        value: '',
         btnText: '',
         title: ''
       },
       body: null,
-      articleTitle: 'Article Editor | Editing New Article',
+      videoHref: null,
+      imageHref: null,
+      articleTitle: this.get('i18n').t('article.header'),
       options: options
     }); 
+  },
+
+  /*
+   * Uses promise to set success or error message.
+   */
+  _updateArticle(article, properties) {
+    article.setProperties(properties);
+    let promise = article.save();
+    promise.then( (res) => {
+      this.controller.set('article', res);
+      this.controller.send('setMessage',
+        this.get('i18n').t('article.save.success'),
+        'successMessage');
+    });
   },
 
   actions: {
@@ -34,11 +54,10 @@ export default Ember.Route.extend({
       if (show) {
         this.controller.setProperties({
           modalState: {
-            action: '',
-            label: '',
-            value: '',
-            btnText: '',
-            title: ''
+            action: 'addImage',
+            label: this.get('i18n').t('modal.addImage.title'),
+            btnText: this.get('i18n').t('modal.addImage.btnText'),
+            title: this.get('i18n').t('modal.addImage.title')
           }
         });
       }
@@ -51,17 +70,16 @@ export default Ember.Route.extend({
         this.controller.setProperties({
           modalState: {
             action: 'addVideo',
-            label: 'Add Video',
-            value: '',
-            btnText: '',
-            title: ''
+            label: this.get('i18n').t('modal.addVideo.title'),
+            btnText: this.get('i18n').t('modal.addVideo.btnText'),
+            title: this.get('i18n').t('modal.addVideo.title')
           }
         });
       }
     },
 
     addVideo() {
-      let href = this.controller.get('videoHref');
+      let href = this.controller.get('modalInputValue');
       let hrefSegments = href.split('=').length;
       let normalYoutubeURL = href.split('=')[1];
       let video = null;
@@ -75,19 +93,34 @@ export default Ember.Route.extend({
     },
 
     addImage() {
-      let href = this.controller.get('imageHref');
+      let href = this.controller.get('modalInputValue');
       let image = `<img src="${href}">`;
       Ember.$('.editable').append(image);
     },
 
     save() {
-      let article = {};
-      article.body = this.controller.get('body');
-      this.store.createRecord('article', article);
+      let body = this.controller.get('body');
+      let article = this.controller.get('article');
+
+      if (!body) {
+        this.controller.send('setMessage',
+          this.get('i18n').t('article.save.error', 'you must supply some text.'),
+          'errorMessage');
+        return;
+      }
+
+      if (article) {
+        this._updateArticle(article, {body: body});
+      } else {
+        let newArticle = this.store.createRecord('article');
+        this._updateArticle(newArticle, {body: body});
+      }
     },
 
     publish() {
-      let article = this.controller.get('body');
+      let body = this.controller.get('body');
+      let article = this.controller.get('article');
+      this._updateArticle(article, {published: true});
     }
   }
 });

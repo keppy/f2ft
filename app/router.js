@@ -8,7 +8,9 @@ var Router = Ember.Router.extend({
 Router.map(function() {
   this.route('login');
   this.route('signup');
-  this.route('writer');
+  this.route('writer', function() {
+    this.route('article', {path: 'article/:id'});
+  });
   this.route('home');
 });
 

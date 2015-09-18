@@ -5,6 +5,7 @@ export default Ember.Route.extend({
   i18n: Ember.inject.service(),
 
   setupController(controller) {
+    debugger;
     let options = JSON.stringify({
       theme: 'flat',
       toobar: {
